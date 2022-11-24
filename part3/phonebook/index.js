@@ -1,12 +1,13 @@
 const express = require('express')
 const app = express()
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
+const morgan = require('morgan')
 
-// parse application/x-www-form-urlencoded
+morgan.token('POST', function (req, res) { return JSON.stringify(req.body) })
+
 app.use(bodyParser.urlencoded({ extended: false }))
-
-// parse application/json
 app.use(bodyParser.json())
+app.use(morgan('combined'))
 
 let notes = [
     { 
@@ -58,6 +59,7 @@ app.get('/api/persons/:id', (request, response) => {
   })
 
   app.post('/api/persons', (request, response) => {
+
     const body = request.body;
     
   if (!body.name || !body.number) {
