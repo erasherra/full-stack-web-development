@@ -1,61 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-
-
-const Person = (props) => {
-
-  return (<p>{props.person.name} {props.person.number}</p>)
-}
-
-const Persons = (props) => {
-
-  return(
-    <div>
-    {props.personsToShow.map(person => 
-      <Person key={person.name} person={person} />
-    )}
-  </div>
-  )
-}
-
-const Filter = (props) => {
-
-  return (
-    <div>
-          filter shown with: <input 
-          value={props.filter}
-          onChange={props.handleFilterChange}
-          />
-        </div>
-  )
-}
-
-const PersonForm = (props) => {
-
-  return (
-    <div>
-          <form onSubmit={props.addPerson}>
-        <div>
-          <div>
-          name: <input 
-          value={props.newName}
-          onChange={props.handleNoteChange}
-          />
-        </div>
-        <div>
-          number: <input 
-          value={props.newNumber}
-          onChange={props.handleNumberChange}
-          />
-        </div>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-    </div>
-  )
-}
+import Persons from './components/Persons';
+import PersonForm from './components/PersonForm';
+import Filter from './components/Filter';
 
 
 const App = () => {
@@ -68,11 +15,9 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    console.log('effect')
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
       })
   }, [])
