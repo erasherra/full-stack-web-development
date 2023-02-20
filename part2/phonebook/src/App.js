@@ -3,6 +3,7 @@ import axios from 'axios'
 import Persons from './components/Persons';
 import PersonForm from './components/PersonForm';
 import Filter from './components/Filter';
+import personService from './services/persons'; 
 
 
 const App = () => {
@@ -13,13 +14,18 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const runDummy = false;
 
   useEffect(() => {
-    axios
+    
+    runDummy ? axios
       .get('http://localhost:3001/persons')
       .then(response => {
+        console.log(response)
         setPersons(response.data)
       })
+      :
+      personService.getAll().then(persons => setPersons(persons))
   }, [])
 
   const validate = () => {
@@ -43,10 +49,16 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-  
-    setPersons(persons.concat(personObject))
+    
+    if(runDummy){
+      setPersons(persons.concat(personObject))
+    }else{
+      personService.create(personObject).then(persons => setPersons(persons))
+    }
+    
     setNewName('')
     setNewNumber('')
+    
   }
 
   const handleNoteChange = (event) => {

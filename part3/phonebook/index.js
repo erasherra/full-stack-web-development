@@ -1,13 +1,17 @@
+const PORT = process.env.PORT || 3001
+
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const cors = require('cors')
 
 morgan.token('POST', function (req, res) { return JSON.stringify(req.body) })
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(morgan('combined'))
+app.use(cors())
 
 let notes = [
     { 
@@ -87,7 +91,7 @@ app.get('/api/persons/:id', (request, response) => {
 
   notes = notes.concat(note)
 
-  response.json(note)
+  response.json(notes) //response.json(note) 
   })
 
 app.get('/info', (request, response) => {
@@ -100,7 +104,7 @@ app.get('/info', (request, response) => {
      )
   })
 
-const PORT = 3001
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
